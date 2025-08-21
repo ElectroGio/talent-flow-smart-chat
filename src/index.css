@@ -1,0 +1,127 @@
+.smart-chat-bubble-container {
+  background-color: #3F51B5;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  z-index: 999999999999999999999;
+  cursor: pointer;
+}
+
+.bubble-container {
+  position: relative;
+}
+
+.bubble-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: -1;
+  cursor: pointer;
+}
+
+.smart-chat-bubble {
+  width: 350px;
+  height: 600px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #F5F5F5;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.smart-chat-bubble-header {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding: 15px;
+  background-color: #3F51B5;
+}
+
+.smart-chat-bubble-header p {
+  margin: 0;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: snow;
+}
+
+.smart-chat-body {
+  padding: 10px
+}
+
+.bot-message {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.user-message {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.message-space {
+  width: 30%;
+}
+
+.message-body {
+  width: 70%;
+  border-radius: 4px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.message-body-bot {
+  background-color: #424242;
+  color: snow;
+}
+
+.message-body-user {
+  background-color: #2E7D32;
+  color: snow;
+}
+
+.smart-chat-form {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.smart-chat-container {
+  position: relative;
+}
+
+.smart-chat-form-container {
+  padding: 20px 20px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.smart-chat-message-input {
+  width: 100%;
+  border: 0;
+  box-shadow: none;
+  border-radius: 2px;
+  height: 50px;
+}
+
+.smart-chat-submit-button {
+  border: 0;
+  box-shadow: none;
+  background-color: #3F51B5;
+  padding: 12px;
+  text-transform: uppercase;
+  margin-top: 15px;
+  align-self: center;
+  color: snow;
+  border-radius: 4px;
+  cursor: pointer;
+}
