@@ -135,7 +135,7 @@
   border: 0;
   box-shadow: none;
   border-radius: 2px;
-  height: 50px;
+  padding: 15px;
 }
 
 .smart-chat-submit-button {
@@ -216,6 +216,12 @@
 
 .smart-chat-file-input {
   display: none;
+}
+
+.smart-chat-form-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .current-file-chip {

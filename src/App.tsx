@@ -11,6 +11,7 @@ import {
   MdAttachFile
 } from "react-icons/md";
 import NotificationSound from '../public/notification.mp3';
+import { TextField, Button } from '@mui/material';
 
 export default function App() {
   const [isShowBubble, setIsShowBubble] = useState(true);
@@ -153,38 +154,30 @@ export default function App() {
               </div>
             </div>
             <div className="smart-chat-form">
-              <form onSubmit={HandleFormSubmit}>
-                <div className="smart-chat-form-container">
+              <div className="smart-chat-form-container">
+                <form onSubmit={HandleFormSubmit}>
                   {isLoading ? (
-                    <div>
-                      <div className="loader" />
-                    </div>
+                    <div className="loader" />
                   ) : null}
-                  {currentFile ? (
-                    <div>
-                      <div className="current-file-chip">
-                        <p>{currentFile.name}</p>
-                      </div>
-                    </div>
-
-                  ) : null}
-                  <input
-                    type="text"
-                    className="smart-chat-message-input"
+                  <TextField
+                    variant="filled"
+                    fullWidth
+                    placeholder="Type your message..."
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                   />
-                  <div className="chat-form-buttons">
-                    <div className="chat-form-attach">
-                      <MdAttachFile className="smart-chat-attach-icon" onClick={HandleOpenFileUpload} />
-                    </div>
-                    <button type="submit" className="smart-chat-submit-button">
+                  <div className="smart-chat-form-actions">
+                    <Button type="submit" variant="outlined" color="primary" onClick={HandleOpenFileUpload}>
+                      <MdAttachFile className="smart-chat-send-icon" />
+                      Attach
+                    </Button>
+                    <Button type="submit" variant="contained" color="primary">
                       <MdSend className="smart-chat-send-icon" />
-                      Send Message
-                    </button>
+                      Send
+                    </Button>
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
           </div>
         </div>
