@@ -169,6 +169,29 @@
   font-size: 25px;
 }
 
+.chat-form-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.smart-chat-attach-icon {
+  color: snow;
+  font-size: 25px;
+}
+
+.chat-form-attach {
+  background-color: #3F51B5;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
 .loader {
   height: 22px;
   aspect-ratio: 2.5;
@@ -178,6 +201,21 @@
   animation: l43 1s infinite linear;
   margin-bottom: 10px;
   color: #3F51B5 !important;
+}
+
+.smart-chat-file-input {
+  display: none;
+}
+
+.current-file-chip {
+  border: 1px solid #3F51B5;
+  width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+  margin-bottom: 10px;
+  color: #3F51B5;
 }
 
 @keyframes l43 {

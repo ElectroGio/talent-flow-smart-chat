@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { SendChatMessageService } from "./services/ChatService";
 import {
   MdChatBubble,
@@ -8,6 +8,7 @@ import {
   MdFullscreen,
   MdFullscreenExit,
   MdChat,
+  MdAttachFile
 } from "react-icons/md";
 
 export default function App() {
@@ -18,6 +19,10 @@ export default function App() {
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const [currentFile, setCurrentFile] = useState<File | null>(null);
 
   type Message = {
     message: string;
@@ -38,6 +43,9 @@ export default function App() {
   async function HandleFormSubmit(
     event: React.FormEvent<HTMLFormElement>
   ): Promise<void> {
+    if (inputValue.trim() === "") {
+      return;
+    }
     setIsLoading(true);
     event.preventDefault();
     setMessages((prevMessages) => [
@@ -51,6 +59,9 @@ export default function App() {
     setInputValue("");
     const formData = new FormData();
     formData.append("question", inputValue);
+    if (currentFile) {
+      formData.append("files", currentFile);
+    }
     const response = await SendChatMessageService(formData);
     setMessages((prevMessages) => [
       ...prevMessages,
@@ -61,6 +72,17 @@ export default function App() {
       },
     ]);
     setIsLoading(false);
+  }
+
+  function HandleOpenFileUpload() {
+    fileInputRef.current?.click();
+  }
+
+  function HandleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (file) {
+      setCurrentFile(file);
+    }
   }
 
   return (
@@ -134,22 +156,36 @@ export default function App() {
                       <div className="loader" />
                     </div>
                   ) : null}
+                  {currentFile ? (
+                    <div>
+                      <div className="current-file-chip">
+                        <p>{currentFile.name}</p>
+                      </div>
+                    </div>
+
+                  ) : null}
                   <input
                     type="text"
                     className="smart-chat-message-input"
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                   />
-                  <button type="submit" className="smart-chat-submit-button">
-                    <MdSend className="smart-chat-send-icon" />
-                    Send Message
-                  </button>
+                  <div className="chat-form-buttons">
+                    <div className="chat-form-attach">
+                      <MdAttachFile className="smart-chat-attach-icon" onClick={HandleOpenFileUpload} />
+                    </div>
+                    <button type="submit" className="smart-chat-submit-button">
+                      <MdSend className="smart-chat-send-icon" />
+                      Send Message
+                    </button>
+                  </div>
                 </div>
               </form>
             </div>
           </div>
         </div>
       ) : null}
+      <input type="file" className="smart-chat-file-input" ref={fileInputRef} onChange={HandleFileChange} />
     </>
   );
 }
