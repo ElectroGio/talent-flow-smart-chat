@@ -1,11 +1,23 @@
 import "./App.css";
 import { useState } from "react";
-import { SendChatMessageService } from './services/ChatService'
+import { SendChatMessageService } from "./services/ChatService";
+import {
+  MdChatBubble,
+  MdSend,
+  MdClose,
+  MdFullscreen,
+  MdFullscreenExit,
+  MdChat,
+} from "react-icons/md";
 
 export default function App() {
   const [isShowBubble, setIsShowBubble] = useState(true);
 
   const [inputValue, setInputValue] = useState("");
+
+  const [isFullScreen, setIsFullScreen] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   type Message = {
     message: string;
@@ -23,7 +35,10 @@ export default function App() {
     setIsShowBubble(false);
   }
 
-  async function HandleFormSubmit(event: React.FormEvent<HTMLFormElement>): Promise<void> {
+  async function HandleFormSubmit(
+    event: React.FormEvent<HTMLFormElement>
+  ): Promise<void> {
+    setIsLoading(true);
     event.preventDefault();
     setMessages((prevMessages) => [
       ...prevMessages,
@@ -45,23 +60,47 @@ export default function App() {
         timespan: new Date().toISOString(),
       },
     ]);
+    setIsLoading(false);
   }
 
   return (
     <>
       {!isShowBubble ? (
-        <div
-          className="smart-chat-bubble-container"
-          onClick={HandleOpenBubble}
-        />
+        <div className="smart-chat-bubble-container" onClick={HandleOpenBubble}>
+          <MdChat className="chat-bubble-icon" />
+        </div>
       ) : null}
       {isShowBubble ? (
         <div className="buble-container">
           <div className="bubble-overlay" onClick={HandleCloseBubble} />
-          <div className="smart-chat-bubble">
+          <div
+            className={
+              isFullScreen
+                ? "smart-chat-bubble smart-chat-bubble-full"
+                : "smart-chat-bubble smart-chat-bubble-mini "
+            }
+          >
             <div className="smart-chat-container">
               <div className="smart-chat-bubble-header">
-                <p>Smart Chat</p>
+                {isFullScreen ? (
+                  <MdFullscreenExit
+                    className="smart-chat-header-icon"
+                    onClick={() => setIsFullScreen(false)}
+                  />
+                ) : (
+                  <MdFullscreen
+                    className="smart-chat-header-icon"
+                    onClick={() => setIsFullScreen(true)}
+                  />
+                )}
+                <div className="header-bot-name">
+                  <MdChatBubble className="smart-chat-name-header-icon" />
+                  <p>ARTEMISA BOT</p>
+                </div>
+                <MdClose
+                  className="smart-chat-header-icon"
+                  onClick={HandleCloseBubble}
+                />
               </div>
               <div className="smart-chat-body">
                 {messages.map((message, index) => {
@@ -90,6 +129,11 @@ export default function App() {
             <div className="smart-chat-form">
               <form onSubmit={HandleFormSubmit}>
                 <div className="smart-chat-form-container">
+                  {isLoading ? (
+                    <div>
+                      <div className="loader" />
+                    </div>
+                  ) : null}
                   <input
                     type="text"
                     className="smart-chat-message-input"
@@ -97,6 +141,7 @@ export default function App() {
                     onChange={(e) => setInputValue(e.target.value)}
                   />
                   <button type="submit" className="smart-chat-submit-button">
+                    <MdSend className="smart-chat-send-icon" />
                     Send Message
                   </button>
                 </div>
