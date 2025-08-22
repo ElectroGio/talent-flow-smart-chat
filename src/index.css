@@ -79,12 +79,23 @@
   margin-bottom: 20px;
 }
 
-.message-space {
+.message-space-mini {
   width: 30%;
 }
 
-.message-body {
+.message-space-full {
+  width: 80%;
+}
+
+.message-body-mini {
   width: 70%;
+  border-radius: 4px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.message-body-full {
+  width: 20%;
   border-radius: 4px;
   padding-left: 20px;
   padding-right: 20px;

@@ -10,6 +10,7 @@ import {
   MdChat,
   MdAttachFile
 } from "react-icons/md";
+import NotificationSound from '../public/notification.mp3';
 
 export default function App() {
   const [isShowBubble, setIsShowBubble] = useState(true);
@@ -21,6 +22,8 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const notificationSoundRef = useRef<HTMLAudioElement | null>(null);
 
   const [currentFile, setCurrentFile] = useState<File | null>(null);
 
@@ -71,6 +74,7 @@ export default function App() {
         timespan: new Date().toISOString(),
       },
     ]);
+    notificationSoundRef.current?.play();
     setIsLoading(false);
   }
 
@@ -129,17 +133,17 @@ export default function App() {
                   if (message.sender === "bot") {
                     return (
                       <div key={index} className="bot-message">
-                        <div className="message-body message-body-bot">
+                        <div className={isFullScreen ? 'message-body-full message-body-bot' : 'message-body-mini message-body-bot'}>
                           <p>{message.message}</p>
                         </div>
-                        <div className="message-space" />
+                        <div className={isFullScreen ? "message-space-full" : "message-space-mini"} />
                       </div>
                     );
                   } else {
                     return (
                       <div key={index} className="user-message">
-                        <div className="message-space" />
-                        <div className="message-body message-body-user">
+                        <div className={isFullScreen ? "message-space-full" : "message-space-mini"} />
+                        <div className={isFullScreen ? 'message-body-full message-body-user' : 'message-body-mini message-body-user'}>
                           <p>{message.message}</p>
                         </div>
                       </div>
@@ -185,6 +189,7 @@ export default function App() {
           </div>
         </div>
       ) : null}
+      <audio src={NotificationSound} ref={notificationSoundRef} preload="auto" />
       <input type="file" className="smart-chat-file-input" ref={fileInputRef} onChange={HandleFileChange} />
     </>
   );
