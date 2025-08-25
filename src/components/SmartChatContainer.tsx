@@ -16,6 +16,7 @@ import SendIcon from "@mui/icons-material/Send";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import NotificationAudio from "../../public/notification.mp3";
 import { SendChatMessageService } from '../services/ChatService';
+import Chip from '@mui/material/Chip';
 
 export function SmartChatContainer() {
   const [currentMessage, setCurrentMessage] = useState("");
@@ -27,6 +28,10 @@ export function SmartChatContainer() {
   const [isLoading, setIsLoading] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const [files, setFiles] = useState<File[]>([]);
 
   const [messages, setMessages] = useState([
     {
@@ -73,6 +78,11 @@ export function SmartChatContainer() {
     setCurrentMessage("");
     const fm = new FormData();
     fm.append('question', currentMessage);
+    if (files.length > 0) {
+      files.forEach((file) => {
+        fm.append('files', file);
+      });
+    }
     const response = await SendChatMessageService(fm);
     setMessages((prevMessages) => [
       ...prevMessages,
@@ -85,6 +95,17 @@ export function SmartChatContainer() {
     ]);
     audioRef.current?.play();
     setIsLoading(false);
+  };
+
+  const HandleAttachClick = () => {
+    inputRef.current?.click();
+  };
+
+  const HandleFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files) {
+      setFiles(Array.from(files));
+    }
   };
 
   return (
@@ -180,11 +201,11 @@ export function SmartChatContainer() {
                         marginBottom: "15px",
                       }}
                     >
-                      <Box sx={{ width: "30%" }} />
+                      <Box sx={{ width: isFullScreen ? "70%" : "30%" }} />
                       <Box
                         sx={{
                           backgroundColor: "#2E7D32",
-                          width: "70%",
+                          width: isFullScreen ? "30%" : "70%",
                           borderRadius: "6px",
                           padding: "10px 10px 0px 10px",
                         }}
@@ -219,7 +240,7 @@ export function SmartChatContainer() {
                       <Box
                         sx={{
                           backgroundColor: "#424242",
-                          width: "70%",
+                          width: isFullScreen ? "30%" : "70%",
                           borderRadius: "6px",
                           padding: "10px 10px 0px 10px",
                         }}
@@ -239,7 +260,7 @@ export function SmartChatContainer() {
                           {message.timestamp}
                         </Typography>
                       </Box>
-                      <Box sx={{ width: "30%" }} />
+                      <Box sx={{ width: isFullScreen ? "70%" : "30%" }} />
                     </Box>
                   );
                 }
@@ -273,13 +294,15 @@ export function SmartChatContainer() {
                     display: "flex",
                     justifyContent: "space-between",
                     marginTop: "15px",
-                    marginBottom: "15px",
                   }}
                 >
-                  <Button variant="outlined" color="primary">
+                  <Button variant="outlined" color="primary" onClick={HandleAttachClick}>
                     <AttachFileIcon sx={{ marginRight: "8px" }} />
                     Attach
                   </Button>
+                  {files.length > 0 && (
+                    <Chip label={files.length + " file(s) selected"} color="success" variant="outlined" />
+                  )}
                   <Button
                     variant="contained"
                     color="primary"
@@ -302,6 +325,7 @@ export function SmartChatContainer() {
         </Box>
       ) : null}
       <audio id="notification-audio" src={NotificationAudio} preload="auto" ref={audioRef} />
+      <input type="file" className="smart-chat-file-input" ref={inputRef} onChange={HandleFileInputChange} />
     </div>
   );
 }
